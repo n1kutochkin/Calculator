@@ -1,7 +1,5 @@
 package ru.n1kutochkin;
 
-import java.util.Optional;
-
 public class Expression {
 
     private Integer fstMember = null;
@@ -15,20 +13,20 @@ public class Expression {
         this.fstMember = fstMember;
     }
 
-    public void setFstNumberIsRoman(boolean fstNumberisRoman) {
-        this.fstNumberIsRoman = fstNumberisRoman;
+    public void setFstNumberIsRoman(boolean fstNumberIsRoman) {
+        this.fstNumberIsRoman = fstNumberIsRoman;
     }
 
-    public void setSndNumberisRoman() {
-        setFstNumberIsRoman(true);
+    public void setFstNumberIsRoman() {
+        this.setFstNumberIsRoman(true);
+    }
+
+    public void setSndNumberIsRoman() {
+        this.setSndNumberIsRoman(true);
     }
 
     public void setSndNumberIsRoman(boolean sndNumberIsRoman) {
         this.sndNumberIsRoman = sndNumberIsRoman;
-    }
-
-    public void setSndNumberIsRoman() {
-        setSndNumberIsRoman(true);
     }
 
     public void setOperation(Operation operation) {
@@ -39,6 +37,18 @@ public class Expression {
         this.sndMember = sndMember;
     }
 
+    public boolean isFstNumberIsRoman() {
+        return fstNumberIsRoman;
+    }
+
+    public boolean isSndNumberIsRoman() {
+        return sndNumberIsRoman;
+    }
+
+    public boolean isBothIsRoman() {
+        return Boolean.logicalAnd(fstNumberIsRoman, sndNumberIsRoman);
+    }
+
     public Integer getResult() {
         switch (operation) {
             case Addition:
@@ -47,7 +57,7 @@ public class Expression {
             case Division:
                 result = fstMember / sndMember;
                 break;
-            case Substraction:
+            case Subtraction:
                 result = fstMember - sndMember;
                 break;
             case Multiplication:
@@ -56,6 +66,12 @@ public class Expression {
         }
 
         return result;
+    }
+
+    // TODO: 14.07.2020 move to RomanNumerals class
+    public String getResultInRoman() {
+        // TODO: 14.07.2020 make implementations for this method 
+        return null;
     }
 }
 
