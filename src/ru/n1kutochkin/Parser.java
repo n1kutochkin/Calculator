@@ -11,13 +11,12 @@ public class Parser {
     static final byte FIRST_MEMBER = 1;
     static final byte SECOND_MEMBER = 6;
     static final byte OPERATION = 5;
-    //TODO Проверяй регулярное выражение - не работает с римскими цифрами
     static String pattern = "((?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})|\\d{1,2})(\\+|\\-|\\/|\\*)((?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})|\\d{1,2})";
     static Pattern universalPattern = Pattern.compile(pattern);
     private String expression;
     private Optional<Expression> result = Optional.empty();
 
-    public Parser(String expression) {
+    public Parser(String expression) throws Exception{
         this.expression = expression;
         this.makeExpression();
     }
@@ -26,7 +25,7 @@ public class Parser {
         return result;
     }
 
-    private void makeExpression() {
+    private void makeExpression() throws Exception {
         StringBuffer buffer = new StringBuffer(expression);
         Matcher matcher = universalPattern.matcher(buffer);
 
@@ -36,43 +35,51 @@ public class Parser {
 
         try {
             result.get().setFstMember(Integer.parseInt(matcher.group(FIRST_MEMBER)));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | IllegalStateException e) {
             try {
                 result.get().setFstMember(romanToArabic(matcher.group(FIRST_MEMBER)));
-
-            } catch (IllegalArgumentException ex) {
+                result.get().setFstNumberIsRoman();
+            } catch (IllegalArgumentException | IllegalStateException ex) {
                 throw ex;
             }
         }
 
         try {
             result.get().setSndMember(Integer.parseInt(matcher.group(SECOND_MEMBER)));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | IllegalStateException e) {
             try {
                 result.get().setSndMember(romanToArabic(matcher.group(SECOND_MEMBER)));
-            } catch (IllegalArgumentException ex) {
+                result.get().setSndNumberIsRoman();
+            } catch (IllegalArgumentException | IllegalStateException ex) {
                 throw ex;
             }
         }
 
-        switch (matcher.group(OPERATION)) {
-            case "+":
-                result.get().setOperation(Operation.Addition);
-                break;
-            case "-":
-                result.get().setOperation(Operation.Substraction);
-                break;
-            case "*":
-                result.get().setOperation(Operation.Multiplication);
-                break;
-            case "\\":
-                result.get().setOperation(Operation.Division);
-                break;
-            default:
-                throw new InputMismatchException("Нет знака в выражении");
+        if (!Boolean.logicalXor(result.get().isFstNumberIsRoman(), result.get().isSndNumberIsRoman())) {
+            switch (matcher.group(OPERATION)) {
+                case "+":
+                    result.get().setOperation(Operation.Addition);
+                    break;
+                case "-":
+                    result.get().setOperation(Operation.Subtraction);
+                    break;
+                case "*":
+                    result.get().setOperation(Operation.Multiplication);
+                    break;
+                case "\\":
+                    result.get().setOperation(Operation.Division);
+                    break;
+                default:
+                    throw new InputMismatchException("Нет знака в выражении");
+            }
+        } else {
+            throw new Exception("Нельзя использовать однговременно и арабские, и римские цифры");
         }
+
+
     }
 
+    //TODO move to enum class of RomanNumerals
     private static int romanToArabic(String input) {
         String romanNumeral = input.toUpperCase();
         int result = 0;
