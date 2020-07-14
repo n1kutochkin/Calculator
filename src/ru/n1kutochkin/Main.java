@@ -10,9 +10,14 @@ public class Main {
         Parser parser = new Parser(in.nextLine());
 
         if (parser.getResult().isPresent()) {
-           System.out.println(parser.getResult().get().getResult());
+            if (parser.getResult().get().isBothIsRoman()) {
+                System.out.println(parser.getResult().get().getResultInRoman());
+            } else {
+                System.out.println(parser.getResult().get().getResult());
+            }
         } else {
-            throw new Exception();
+            throw new Exception("Результата нет.");
         }
     }
 }
+
