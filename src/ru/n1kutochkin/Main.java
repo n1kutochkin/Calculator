@@ -11,7 +11,7 @@ public class Main {
 
         if (parser.getResult().isPresent()) {
             if (parser.getResult().get().isBothIsRoman()) {
-                System.out.println(parser.getResult().get().getResultInRoman());
+                System.out.println(RomanNumber.arabicToRoman(parser.getResult().get().getResult()));
             } else {
                 System.out.println(parser.getResult().get().getResult());
             }

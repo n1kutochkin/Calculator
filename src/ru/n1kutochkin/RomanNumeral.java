@@ -26,6 +26,4 @@ public enum RomanNumeral {
                     .sorted(Comparator.comparing((RomanNumeral e) -> e.value).reversed())
                     .collect(Collectors.toList());
         }
-
-    // TODO: 14.07.2020 place here methods for converting from romans to arabic and vice versa 
 }

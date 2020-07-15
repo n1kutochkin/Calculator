@@ -2,76 +2,60 @@ package ru.n1kutochkin;
 
 public class Expression {
 
-    private Integer fstMember = null;
-    private Integer sndMember = null;
+    private Number fstMember = null;
+    private Number sndMember = null;
     private Operation operation = null;
-    private boolean fstNumberIsRoman = false;
-    private boolean sndNumberIsRoman = false;
     private Integer result = null;
 
-    public void setFstMember(Integer fstMember) {
-        this.fstMember = fstMember;
+    public void setFstMember(Number fstMember) throws Exception {
+        if (fstMember.intValue() >= 1 && fstMember.intValue() <= 10) {
+            this.fstMember = fstMember;
+        } else {
+            throw new Exception("Первое число не удовлетворяет условию задачи");
+        }
+
     }
 
-    public void setFstNumberIsRoman(boolean fstNumberIsRoman) {
-        this.fstNumberIsRoman = fstNumberIsRoman;
-    }
-
-    public void setFstNumberIsRoman() {
-        this.setFstNumberIsRoman(true);
-    }
-
-    public void setSndNumberIsRoman() {
-        this.setSndNumberIsRoman(true);
-    }
-
-    public void setSndNumberIsRoman(boolean sndNumberIsRoman) {
-        this.sndNumberIsRoman = sndNumberIsRoman;
+    public void setSndMember(Number sndMember) throws Exception {
+        if (sndMember.intValue() >= 1 && sndMember.intValue() <= 10) {
+            this.sndMember = sndMember;
+        } else {
+            throw new Exception("Второе число не удовлетворяет условию задачи");
+        }
     }
 
     public void setOperation(Operation operation) {
         this.operation = operation;
     }
 
-    public void setSndMember(Integer sndMember) {
-        this.sndMember = sndMember;
-    }
-
     public boolean isFstNumberIsRoman() {
-        return fstNumberIsRoman;
+        return fstMember instanceof RomanNumber;
     }
 
     public boolean isSndNumberIsRoman() {
-        return sndNumberIsRoman;
+        return sndMember instanceof RomanNumber;
     }
 
     public boolean isBothIsRoman() {
-        return Boolean.logicalAnd(fstNumberIsRoman, sndNumberIsRoman);
+        return Boolean.logicalAnd(fstMember instanceof RomanNumber, sndMember instanceof RomanNumber);
     }
-
     public Integer getResult() {
         switch (operation) {
             case Addition:
-                result = fstMember + sndMember;
+                result = fstMember.intValue() + sndMember.intValue();
                 break;
             case Division:
-                result = fstMember / sndMember;
+                result = fstMember.intValue() / sndMember.intValue();
                 break;
             case Subtraction:
-                result = fstMember - sndMember;
+                result = fstMember.intValue() - sndMember.intValue();
                 break;
             case Multiplication:
-                result = fstMember * sndMember;
+                result = fstMember.intValue() * sndMember.intValue();
                 break;
         }
 
         return result;
-    }
-
-    // TODO: 14.07.2020 move to RomanNumerals class
-    public String getResultInRoman() {
-        // TODO: 14.07.2020 make implementations for this method 
-        return null;
     }
 }
 
