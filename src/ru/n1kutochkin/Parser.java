@@ -64,7 +64,7 @@ public class Parser {
                 case "*":
                     result.get().setOperation(Operation.Multiplication);
                     break;
-                case "\\":
+                case "/":
                     result.get().setOperation(Operation.Division);
                     break;
                 default:
